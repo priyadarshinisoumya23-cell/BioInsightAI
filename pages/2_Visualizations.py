@@ -1,5 +1,6 @@
 import streamlit as st
-import plotly.express as px
+import seaborn as sns
+import matplotlib.pyplot as plt
 from utils.data_loader import load_data
 
 st.set_page_config(
@@ -8,35 +9,49 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("📊 Interactive Visualizations")
+st.title("📊 Gene Expression Visualizations")
 
-try:
-    expression_data = load_data()
+# Load data
+expression_data = load_data()
 
-    st.success("✅ Dataset Loaded Successfully")
+st.success("Dataset Loaded Successfully")
 
-    # -----------------------------
-    # Box Plot
-    # -----------------------------
-    st.subheader("📦 Gene Expression Box Plot")
+# Keep only numeric values
+expression_data = expression_data.select_dtypes(include="number")
 
-    fig_box = px.box(
-        expression_data.iloc[:, :10],
-        points=False
-    )
+st.subheader("🔥 Correlation Heatmap")
 
-    st.plotly_chart(fig_box, use_container_width=True)
+# Use only the first 30 samples to keep the plot manageable
+corr = expression_data.iloc[:, :30].corr()
 
-    # -----------------------------
-    # Violin Plot
-    # -----------------------------
-    st.subheader("🎻 Gene Expression Violin Plot")
+fig, ax = plt.subplots(figsize=(12, 10))
 
-    fig_violin = px.violin(
-        expression_data.iloc[:, :10]
-    )
+sns.heatmap(
+    corr,
+    cmap="viridis",
+    annot=False,
+    square=True,
+    ax=ax
+)
 
-    st.plotly_chart(fig_violin, use_container_width=True)
+st.pyplot(fig)
 
-except Exception as e:
-    st.error(f"❌ Error: {e}")
+st.divider()
+
+st.subheader("📦 Box Plot")
+
+fig2, ax2 = plt.subplots(figsize=(12, 5))
+sns.boxplot(data=expression_data.iloc[:, :10], ax=ax2)
+plt.xticks(rotation=90)
+
+st.pyplot(fig2)
+
+st.divider()
+
+st.subheader("🎻 Violin Plot")
+
+fig3, ax3 = plt.subplots(figsize=(12, 5))
+sns.violinplot(data=expression_data.iloc[:, :10], ax=ax3)
+plt.xticks(rotation=90)
+
+st.pyplot(fig3)
