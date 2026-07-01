@@ -26,7 +26,7 @@ def load_data():
         header=0,
         quotechar='"',
         engine="python",
-        low_memory=False
+       
     )
 
     # Remove GEO end marker
