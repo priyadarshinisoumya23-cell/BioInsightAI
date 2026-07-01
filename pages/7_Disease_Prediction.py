@@ -385,20 +385,7 @@ stats = pd.DataFrame({
 })
 
 st.dataframe(stats, use_container_width=True)
-st.divider()
 
-st.markdown(
-"""
----
-### 🧬 BioInsight AI
-
-AI-Powered Gene Expression Analysis Dashboard
-
-Developed by **Soumya Priyadarshini**
-
-**Disease Prediction Module Version 1.0**
-"""
-)
 st.divider()
 
 st.subheader("📊 Confusion Matrix")
