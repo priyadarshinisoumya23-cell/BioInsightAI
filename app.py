@@ -1,4 +1,14 @@
 import streamlit as st
+import base64
+
+
+# -----------------------------
+# Background Image Function
+# -----------------------------
+def get_base64(file):
+    with open(file, "rb") as f:
+        return base64.b64encode(f.read()).decode()
+
 
 # -----------------------------
 # Page Configuration
@@ -10,11 +20,82 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+
+# -----------------------------
+# Background Theme
+# -----------------------------
+bg = get_base64("assets/bio_background.jpg")
+
+st.markdown(
+    f"""
+    <style>
+
+    .stApp {{
+        background-image: url("data:image/jpeg;base64,{bg}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }}
+
+    /* Dark overlay */
+    .stApp::before {{
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: rgba(5,10,20,0.78);
+        z-index: -1;
+    }}
+
+    /* Sidebar */
+    section[data-testid="stSidebar"] {{
+        background: rgba(15,23,42,0.95);
+    }}
+
+    /* Main container */
+    .block-container {{
+        background: rgba(20,20,30,0.55);
+        border-radius:20px;
+        padding:2rem;
+    }}
+
+    /* Text */
+    h1,h2,h3,h4,h5,h6,p,label,li {{
+        color:white !important;
+    }}
+
+    /* Metric Cards */
+    div[data-testid="metric-container"] {{
+        background: rgba(25,35,55,0.90);
+        border:1px solid #00E5FF;
+        border-radius:15px;
+        padding:15px;
+    }}
+
+    /* Buttons */
+    .stButton > button {{
+        background:#00BCD4;
+        color:white;
+        border:none;
+        border-radius:10px;
+    }}
+
+    .stButton > button:hover {{
+        background:#0097A7;
+    }}
+
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+
 # -----------------------------
 # Sidebar
 # -----------------------------
 st.sidebar.title("🧬 BioInsight AI")
 st.sidebar.success("Gene Expression Analysis Dashboard")
+
 
 # -----------------------------
 # Header
@@ -23,10 +104,11 @@ st.title("🧬 BioInsight AI")
 st.subheader("AI-Powered Gene Expression Analysis Dashboard")
 
 st.markdown("""
-Welcome to **BioInsight AI**, a web-based bioinformatics platform developed for exploring and analyzing gene expression datasets using modern data science and machine learning techniques.
+Welcome to **BioInsight AI**, a web-based bioinformatics platform for exploring gene expression datasets using data science and machine learning.
 """)
 
 st.divider()
+
 
 # -----------------------------
 # Dashboard Metrics
@@ -49,6 +131,7 @@ with col4:
 
 st.divider()
 
+
 # -----------------------------
 # Features
 # -----------------------------
@@ -57,62 +140,54 @@ st.header("🚀 Features")
 col1, col2 = st.columns(2)
 
 with col1:
-
     st.info("""
 ### 📂 Data Explorer
-
-- View Gene Expression Dataset
-- Dataset Preview
-- Summary Statistics
+- View Dataset
 - Gene Search
+- Summary Statistics
+- Dataset Preview
 """)
 
     st.success("""
-### 📊 Interactive Visualizations
-
+### 📊 Visualizations
 - Correlation Heatmap
 - Box Plot
 - Violin Plot
-- Plotly Interactive Charts
+- Interactive Charts
 """)
 
     st.warning("""
 ### 🤖 Machine Learning
-
-- Principal Component Analysis (PCA)
+- PCA
 - K-Means Clustering
-- Random Forest Classification
+- Random Forest
 - Feature Importance
 """)
 
 with col2:
-
     st.info("""
 ### 🧬 Differential Expression
-
-- Top 20 Highly Expressed Genes
-- Interactive Plotly Bar Chart
+- Top Genes
+- Plotly Charts
 - CSV Download
 """)
 
     st.success("""
 ### 📄 Report Generation
-
-- Dataset Summary
+- PDF Report
 - CSV Export
-- Professional PDF Report
+- Summary Report
 """)
 
     st.warning("""
 ### ℹ️ About
-
-- Project Information
-- Dataset Details
+- Dataset Information
 - Technologies Used
 - Developer Profile
 """)
 
 st.divider()
+
 
 # -----------------------------
 # Workflow
@@ -120,70 +195,63 @@ st.divider()
 st.header("🔬 Analysis Workflow")
 
 st.code("""
-      GEO Dataset
-           │
-           ▼
-   Data Cleaning
-           │
-           ▼
-   Data Exploration
-           │
-           ▼
- Interactive Visualization
-           │
-           ▼
- Machine Learning Analysis
-           │
-           ▼
- Differential Expression
-           │
-           ▼
- PDF & CSV Reports
+GEO Dataset
+      │
+      ▼
+Data Cleaning
+      │
+      ▼
+Data Exploration
+      │
+      ▼
+Visualization
+      │
+      ▼
+Machine Learning
+      │
+      ▼
+Differential Expression
+      │
+      ▼
+Reports
 """)
 
 st.divider()
+
 
 # -----------------------------
 # Technologies
 # -----------------------------
-st.header("🛠️ Technologies Used")
+st.header("🛠 Technologies Used")
 
-tech1, tech2, tech3 = st.columns(3)
+c1, c2, c3 = st.columns(3)
 
-with tech1:
+with c1:
     st.markdown("""
-✅ Python
-
-✅ Streamlit
-
-✅ Pandas
-
-✅ NumPy
+- Python
+- Streamlit
+- Pandas
+- NumPy
 """)
 
-with tech2:
+with c2:
     st.markdown("""
-✅ Plotly
-
-✅ Matplotlib
-
-✅ Seaborn
-
-✅ Scikit-learn
+- Plotly
+- Matplotlib
+- Seaborn
+- Scikit-learn
 """)
 
-with tech3:
+with c3:
     st.markdown("""
-✅ FPDF2
-
-✅ Git
-
-✅ GitHub
-
-✅ Streamlit Cloud
+- FPDF2
+- Git
+- GitHub
+- Streamlit Cloud
 """)
 
 st.divider()
+
 
 # -----------------------------
 # Dataset
@@ -191,14 +259,15 @@ st.divider()
 st.header("🧬 Dataset")
 
 st.success("""
-**Dataset Source:** Gene Expression Omnibus (GEO)
+**Dataset:** GSE45827
 
-**Dataset ID:** GSE45827
+**Source:** Gene Expression Omnibus (GEO)
 
-This dataset contains gene expression profiles used for bioinformatics analysis, visualization, and machine learning.
+Breast cancer gene expression dataset used for bioinformatics analysis.
 """)
 
 st.divider()
+
 
 # -----------------------------
 # Developer
@@ -208,49 +277,22 @@ st.header("👩‍💻 Developer")
 st.info("""
 **Soumya Priyadarshini**
 
-BioInsight AI was developed as a bioinformatics dashboard using Python and Streamlit.
-
-It demonstrates data preprocessing, visualization, machine learning, differential gene expression analysis, and automated report generation.
+BioInsight AI is a bioinformatics dashboard built using Python and Streamlit for gene expression analysis, visualization, machine learning, and report generation.
 """)
 
 st.divider()
 
-# -----------------------------
-# Future Scope
-# -----------------------------
-st.header("🚀 Future Enhancements")
-
-future1, future2 = st.columns(2)
-
-with future1:
-    st.markdown("""
-- 🔬 Pathway Analysis
-- 🧬 Gene Enrichment Analysis
-- 🧪 Disease Classification
-- ☁️ Cloud Database Integration
-""")
-
-with future2:
-    st.markdown("""
-- 🤖 Deep Learning Models
-- 📈 Advanced Analytics
-- 🔐 User Authentication
-- 🌐 Multi-Dataset Support
-""")
-
-st.divider()
 
 # -----------------------------
 # Footer
 # -----------------------------
 st.markdown(
     """
-    <div style='text-align:center; padding:20px;'>
+    <div style="text-align:center;padding:20px;">
         <h3>🧬 BioInsight AI</h3>
         <p>AI-Powered Gene Expression Analysis Dashboard</p>
         <p><b>Developed by Soumya Priyadarshini</b></p>
-        <p>Built with ❤️ using Python, Streamlit, Plotly & Scikit-learn</p>
-        <p>© 2026 BioInsight AI</p>
+        <p>Built with Python • Streamlit • Plotly • Scikit-learn</p>
     </div>
     """,
     unsafe_allow_html=True
